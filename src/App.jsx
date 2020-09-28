@@ -1,9 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 
 import utils from "./shared/math-utils";
 
+const NumberItem = ({ number, status, clicked }) => {
+  return (
+    <button
+      className="number"
+      style={{ backgroundColor: colors[status] }}
+      onClick={() => clicked(number, status)}
+    >
+      {number}
+    </button>
+  );
+};
+
 const StarMatch = () => {
+  const [stars, setStars] = useState(utils.random(1, 9));
+  const [availableNumbers, setAvailableNumbers] = useState(utils.range(1, 9));
+  const [candidates, setCandidates] = useState([2, 3]);
+
+  const candidateIsWrong = () => utils.sum(candidates) > stars;
+  const getStatus = (number) => {
+    if (!availableNumbers.includes(number)) {
+      return "used";
+    }
+
+    if (candidates.includes(number)) {
+      return candidateIsWrong() ? "wrong" : "candidate";
+    }
+
+    return "available";
+  };
+
+  const onNumberClickHandler = (number, status) => {
+    if (status === "used") {
+      return;
+    }
+  };
+
   return (
     <div className="game">
       <div className="help">
@@ -11,26 +46,21 @@ const StarMatch = () => {
       </div>
       <div className="body">
         <div className="left">
-          <div className="star" />
-          <div className="star" />
-          <div className="star" />
-          <div className="star" />
-          <div className="star" />
-          <div className="star" />
-          <div className="star" />
-          <div className="star" />
-          <div className="star" />
+          {utils.range(1, stars).map((star) => (
+            <div key={star} className="star" />
+          ))}
         </div>
         <div className="right">
-          <button className="number">1</button>
-          <button className="number">2</button>
-          <button className="number">3</button>
-          <button className="number">4</button>
-          <button className="number">5</button>
-          <button className="number">6</button>
-          <button className="number">7</button>
-          <button className="number">8</button>
-          <button className="number">9</button>
+          {utils.range(1, 9).map((num) => (
+            <NumberItem
+              key={num}
+              number={num}
+              status={getStatus(num)}
+              clicked={onNumberClickHandler}
+            >
+              {num}
+            </NumberItem>
+          ))}
         </div>
       </div>
       <div className="timer">Time Remaining: 10</div>
