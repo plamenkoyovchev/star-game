@@ -18,7 +18,7 @@ const NumberItem = ({ number, status, clicked }) => {
 const StarMatch = () => {
   const [stars, setStars] = useState(utils.random(1, 9));
   const [availableNumbers, setAvailableNumbers] = useState(utils.range(1, 9));
-  const [candidates, setCandidates] = useState([2, 3]);
+  const [candidates, setCandidates] = useState([]);
 
   const candidateIsWrong = () => utils.sum(candidates) > stars;
   const getStatus = (number) => {
@@ -36,6 +36,23 @@ const StarMatch = () => {
   const onNumberClickHandler = (number, status) => {
     if (status === "used") {
       return;
+    }
+
+    const newCandidates =
+      status === "available"
+        ? [...candidates, number]
+        : candidates.filter((cn) => cn !== number);
+
+    if (utils.sum(newCandidates) !== stars) {
+      setCandidates(newCandidates);
+    } else {
+      const newAvailableNumbers = availableNumbers.filter(
+        (an) => !newCandidates.includes(an)
+      );
+
+      setStars(utils.randomSumIn(newAvailableNumbers, 9));
+      setAvailableNumbers(newAvailableNumbers);
+      setCandidates([]);
     }
   };
 
