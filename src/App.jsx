@@ -15,12 +15,27 @@ const NumberItem = ({ number, status, clicked }) => {
   );
 };
 
+const PlayAgain = ({ clicked }) => {
+  return (
+    <div className="game-done">
+      <button onClick={clicked}>Play Again</button>
+    </div>
+  );
+};
+
+const StarDisplay = ({ count }) => {
+  return utils
+    .range(1, count)
+    .map((star) => <div key={star} className="star" />);
+};
+
 const StarMatch = () => {
   const [stars, setStars] = useState(utils.random(1, 9));
   const [availableNumbers, setAvailableNumbers] = useState(utils.range(1, 9));
   const [candidates, setCandidates] = useState([]);
 
   const candidateIsWrong = utils.sum(candidates) > stars;
+  const gameIsWon = availableNumbers.length === 0;
 
   const getStatus = (number) => {
     if (!availableNumbers.includes(number)) {
@@ -57,6 +72,12 @@ const StarMatch = () => {
     }
   };
 
+  const resetGame = () => {
+    setStars(utils.random(1, 9));
+    setAvailableNumbers(utils.range(1, 9));
+    setCandidates([]);
+  };
+
   return (
     <div className="game">
       <div className="help">
@@ -64,9 +85,11 @@ const StarMatch = () => {
       </div>
       <div className="body">
         <div className="left">
-          {utils.range(1, stars).map((star) => (
-            <div key={star} className="star" />
-          ))}
+          {gameIsWon ? (
+            <PlayAgain clicked={resetGame} />
+          ) : (
+            <StarDisplay count={stars} />
+          )}
         </div>
         <div className="right">
           {utils.range(1, 9).map((num) => (
