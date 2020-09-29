@@ -20,14 +20,15 @@ const StarMatch = () => {
   const [availableNumbers, setAvailableNumbers] = useState(utils.range(1, 9));
   const [candidates, setCandidates] = useState([]);
 
-  const candidateIsWrong = () => utils.sum(candidates) > stars;
+  const candidateIsWrong = utils.sum(candidates) > stars;
+
   const getStatus = (number) => {
     if (!availableNumbers.includes(number)) {
       return "used";
     }
 
     if (candidates.includes(number)) {
-      return candidateIsWrong() ? "wrong" : "candidate";
+      return candidateIsWrong ? "wrong" : "candidate";
     }
 
     return "available";
