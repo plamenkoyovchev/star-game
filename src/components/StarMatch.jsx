@@ -11,7 +11,7 @@ const StarMatch = () => {
   const [secondsLeft, setSecondsLeft] = useState(10);
 
   useEffect(() => {
-    if (secondsLeft > 0) {
+    if (secondsLeft > 0 && availableNumbers.length > 0) {
       const timerId = setTimeout(() => {
         setSecondsLeft(secondsLeft - 1);
       }, 1000);
@@ -41,7 +41,7 @@ const StarMatch = () => {
   };
 
   const onNumberClickHandler = (number, status) => {
-    if (status === "used") {
+    if (gameStatus !== "active" || status === "used") {
       return;
     }
 
