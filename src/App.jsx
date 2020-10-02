@@ -1,12 +1,11 @@
 import React from "react";
 import "./App.css";
-
-import StarMatch from "./components/StarMatch";
+import Game from "./components/Game";
 
 const App = () => {
   return (
     <div className="App">
-      <StarMatch />
+      <Game />
     </div>
   );
 };
