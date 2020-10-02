@@ -4,7 +4,7 @@ import utils from "../shared/math-utils";
 import GameStatus from "./GameStatus";
 import PlayableNumber from "./PlayableNumber";
 
-const StarMatch = () => {
+const StarMatch = ({ startNewGame }) => {
   const [stars, setStars] = useState(utils.random(1, 9));
   const [availableNumbers, setAvailableNumbers] = useState(utils.range(1, 9));
   const [candidates, setCandidates] = useState([]);
@@ -63,13 +63,6 @@ const StarMatch = () => {
     }
   };
 
-  const resetGame = () => {
-    setStars(utils.random(1, 9));
-    setAvailableNumbers(utils.range(1, 9));
-    setCandidates([]);
-    setSecondsLeft(10);
-  };
-
   return (
     <div className="game">
       <div className="help">
@@ -79,7 +72,7 @@ const StarMatch = () => {
         <div className="left">
           <GameStatus
             gameStatus={gameStatus}
-            playAgainClicked={resetGame}
+            playAgainClicked={startNewGame}
             starsCount={stars}
           />
         </div>
